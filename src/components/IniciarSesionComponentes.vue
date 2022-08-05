@@ -11,14 +11,6 @@
                 </div>
             </div>
             <form action="#" class="col-12 col-md-6" @submit.prevent="iniciarSesion" novalidate>
-                <!-- <div class="mb-3">
-                    <label for="nombre" class="form-label text-light">Nombre:</label>
-                    <input type="text" v-model.trim="nombre" class="form-control" id="nombre" placeholder="Nombre">
-                </div>
-                <div class="mb-3">
-                    <label for="apellido" class="form-label text-light">Apellido:</label>
-                    <input type="text" v-model.trim="apellido" class="form-control" id="apellido" placeholder="Apellido">
-                </div> -->
                 <div class="mb-3">
                     <label for="email" class="form-label text-light">E-mail:</label>
                     <input type="email" v-model.trim="email" class="form-control" id="email" placeholder="tu@email.com">
@@ -39,13 +31,10 @@ export default ({
     name: 'IniciarSesionComponentes',
     data() {
         return {
-            // nombre:"",
-            // apellido:"",
             arrayUsuarios: [],
             email:"",
             password: "",
             errores: [],
-            // sesionEstado: false,
         }
     },
     computed: {
@@ -58,9 +47,6 @@ export default ({
         posicionUsuarioEmail:function(){
             return this.arrayUsuarios.map(usuario => usuario.email).indexOf(this.email);
         },
-        // traerUsuarioSesion: function (){
-
-        // }
     },
     methods: {
         iniciarSesionExitoso:function (){
@@ -91,12 +77,11 @@ export default ({
 
             setTimeout(function(){
                 divIniciarSesion.remove();
-                // location.reload();
             },5000);
 
-            // setTimeout(function(){
-            //     redireccion();
-            // },5200);
+            setTimeout(function(){
+                location.reload();
+            },2500);
         },
         redireccion:function () {
             this.$router.push("/registro")
@@ -104,12 +89,6 @@ export default ({
         guardarEstadoSesion: function () {
         },
         iniciarSesion:function(){
-            // let localStorageUsuario = localStorage.getItem('usuarios');
-            // if(!localStorageUsuario){
-            //     localStorageUsuario = [];
-            // } else {
-            //     localStorageUsuario = JSON.parse(localStorageUsuario);
-            // }
             this.errores = [];
             if(!this.email){
                 this.errores.push('Debes ingresar un email');
@@ -117,9 +96,6 @@ export default ({
             if(!this.password){
                 this.errores.push('Debes ingresar una contraseña');
             }
-            // if(this.comprobarEmail.length !== 1){
-            //     this.errores.push('El email que estas tratando de ingresar no está registrado')
-            // }
 
             if(this.errores.length == 0){
                 if(localStorage.usuarios){
@@ -134,12 +110,12 @@ export default ({
                         console.log('el mail no existe, evitamos error');
                         this.errores.push('El mail que ingresó no está registrado');
                     }
+                } else {
+                    this.errores.push('El mail que ingresó no está registrado');
                 }
             }
         }
     },
-    mounted:function() {
-    }
 })
 </script>
 

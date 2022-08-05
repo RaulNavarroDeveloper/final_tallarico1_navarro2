@@ -80,20 +80,12 @@ export default ({
             },5000);
         },
         sumarId:function(){
-			// if(this.errores.length == 0){
-				this.id++;
-			// }
+			this.id++;
 			return this.id;
 		},
         redireccion:function () {
             this.$router.push("/iniciarSesion")
         },
-        // redireccionAlRegistrarse(){
-        //     //Redireccion al iniciar sesion
-        //     setTimeout(function(){
-        //         this.$router.push("/iniciarSesion");
-        //     }, 6000);
-        // },
 
         registro:function(){
             this.errores = [];
@@ -126,7 +118,6 @@ export default ({
                     this.arrayUsuarios = [];
                 } else {
                     this.arrayUsuarios = JSON.parse(localStorage.getItem("usuarios"));
-                    // console.log(this.existeMail[0].email);
                     if(this.existeMail.length == 1){
                         console.log('el email existe, ERROR');
                         this.errores.push('El email ya está registrado, prueba con otro.')
@@ -144,9 +135,6 @@ export default ({
                 this.apellido = null;
                 this.email = null;
                 this.password = null;
-
-                //Redireccion al iniciar sesion
-                // this.redireccionAlRegistrarse;
             }
         }
     },

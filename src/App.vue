@@ -33,10 +33,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-       <ul class="ul-cuenta">
-        <!-- <li>Nombre: {{this.traerUsuarioSesion[0].nombre}}</li>
+       <ul v-if="posicionUsuarioSesion != -1" class="ul-cuenta">
+        <li>Nombre: {{this.traerUsuarioSesion[0].nombre}}</li>
         <li>Apellido: {{this.traerUsuarioSesion[0].apellido}}</li>
-        <li>Email: {{this.traerUsuarioSesion[0].email}}</li> -->
+        <li>Email: {{this.traerUsuarioSesion[0].email}}</li>
        </ul>
        <a v-if="this.posicionUsuarioSesion != -1" class="btn btn-danger" href="#" @click="cerrarSesion()">Cerrar Sesión</a>
       </div>
@@ -63,7 +63,6 @@ export default ({
     },
     methods: {
       cerrarSesion: function () {
-        // this.arrayUsuarios = JSON.parse(localStorage.getItem("usuarios"));
         this.arrayUsuarios[this.posicionUsuarioSesion].sesionEstado = false;
         localStorage.setItem("usuarios",JSON.stringify(this.arrayUsuarios));
       }
@@ -209,5 +208,10 @@ a:hover {
   color:#ffcc00;
   opacity: 0.8;
   transition: 0.3s;
+}
+
+.fa-circle-xmark:hover{
+  color: red;
+  transition: 0,5s;
 }
 </style>
