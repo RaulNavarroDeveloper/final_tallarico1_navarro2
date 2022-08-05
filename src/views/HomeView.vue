@@ -14,18 +14,9 @@ export default {
     HomeComponentes
   },
   data(){
-      return {
-        items: [],
-      }
+    return {
+      items: [],
+    }
   },
-  mounted(){
-    fetch('https://sodasstereo.000webhostapp.com/api/todos.php')
-    .then(response => response.json())
-    .then(response => {
-      this.items = response;
-      localStorage.setItem('prueba', JSON.stringify(this.items));
-      console.log(this.items);
-    })
-  }
 }
 </script>

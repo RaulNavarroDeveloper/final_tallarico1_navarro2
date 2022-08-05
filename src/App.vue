@@ -20,14 +20,62 @@
                 <li><router-link to="/ultima">Última Gira</router-link></li>
                 <li><router-link to="/ingresar" >Formulario</router-link></li>
                 <li><router-link to="/mostrar">Comentarios</router-link></li>
+                <li v-if="this.posicionUsuarioSesion === -1"><router-link to="/iniciarSesion">Iniciar Sesión</router-link></li>
+                <li v-if="this.posicionUsuarioSesion != -1"><button class="btn btn-primary btn-nav" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-user"></i></button></li>
               </ul>
             </div>
         </div>
       </nav>
     </header>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Cuenta <i class="fa-solid fa-user"></i></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+       <ul class="ul-cuenta">
+        <!-- <li>Nombre: {{this.traerUsuarioSesion[0].nombre}}</li>
+        <li>Apellido: {{this.traerUsuarioSesion[0].apellido}}</li>
+        <li>Email: {{this.traerUsuarioSesion[0].email}}</li> -->
+       </ul>
+       <a v-if="this.posicionUsuarioSesion != -1" class="btn btn-danger" href="#" @click="cerrarSesion()">Cerrar Sesión</a>
+      </div>
+    </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default ({
+  name: 'App',
+  data(){
+    return {
+      arrayUsuarios: [],
+    }
+  },
+  computed: {
+    traerUsuarioSesion: function (){
+        return this.arrayUsuarios.filter(usuario => usuario.sesionEstado === true);
+    },
+    posicionUsuarioSesion:function(){
+      return this.arrayUsuarios.map(usuario => usuario.sesionEstado).indexOf(true);
+    }
+    },
+    methods: {
+      cerrarSesion: function () {
+        // this.arrayUsuarios = JSON.parse(localStorage.getItem("usuarios"));
+        this.arrayUsuarios[this.posicionUsuarioSesion].sesionEstado = false;
+        localStorage.setItem("usuarios",JSON.stringify(this.arrayUsuarios));
+      }
+    },
+  mounted:function(){
+    if(localStorage.usuarios){
+      this.arrayUsuarios = JSON.parse(localStorage.getItem("usuarios"));
+    }
+    console.log(this.arrayUsuarios, this.posicionUsuarioSesion);
+  }
+})
+</script>
 
 <style>
 #app {
@@ -134,5 +182,32 @@ a:hover {
 
 .ul-discografia:nth-child(1){
   margin-top: 10px;
+}
+
+.btn-nav{
+  background-color:#ffcc00;
+}
+
+.btn-nav:hover{
+    background-color:#ffcc00;
+    opacity: 0.8;
+    transition: 0.6s;
+}
+
+.fa-trash{
+  margin-left: 15px;
+  transition: 0.5s;
+}
+
+.fa-trash:hover{
+    color:red;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.fa-pen-to-square:hover{
+  color:#ffcc00;
+  opacity: 0.8;
+  transition: 0.3s;
 }
 </style>

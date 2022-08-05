@@ -28,12 +28,23 @@ const routes = [
   { 
     path: '/ingresar',
     name: 'IngresarView',
-    component: () => import('../views/IngresarView.vue')
+    component: () => import('../views/IngresarView.vue'),
+    props:true,
   },
   { 
     path: '/mostrar',
     name: 'MostrarView',
     component: () => import('../views/MostrarView.vue')
+  },
+  { 
+    path: '/iniciarSesion',
+    name: 'IniciarSesionView',
+    component: () => import('../views/IniciarSesionView.vue')
+  },
+  { 
+    path: '/registro',
+    name: 'RegistroView',
+    component: () => import('../views/RegistroView.vue')
   },
 
 ]

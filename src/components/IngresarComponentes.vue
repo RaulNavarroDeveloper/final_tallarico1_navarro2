@@ -16,38 +16,22 @@
 			</div>
 		</div>
 		<form class="col-12 col-md-6" v-on:submit.prevent="comentar" novalidate>
-			<div class="mb-3">
-				<label for="exampleInput1" class="form-label">Nombre:</label>
-				<input type="text" v-model.trim="nombre" class="form-control" id="exampleInput1" placeholder="Nombre">
+			<!-- <div class="mb-3">
+				<label for="nombre" class="form-label">Nombre:</label>
+				<input type="text" v-model.trim="nombre" class="form-control" id="nombre" placeholder="Nombre">
 			</div>
 			<div class="mb-3">
-				<label for="exampleInput2" class="form-label">Apellido:</label>
-				<input type="text" v-model.trim="apellido" class="form-control" id="exampleInput2" placeholder="Apellido">
+				<label for="apellido" class="form-label">Apellido:</label>
+				<input type="text" v-model.trim="apellido" class="form-control" id="apellido" placeholder="Apellido">
 			</div>
 			<div class="mb-3">
-				<label for="exampleInput3" class="form-label">E-mail:</label>
-				<input type="email" v-model.trim="email" class="form-control" id="exampleInput3" placeholder="tu@email.com">
-			</div>
+				<label for="email" class="form-label">E-mail:</label>
+				<input type="email" v-model.trim="email" class="form-control" id="email" placeholder="tu@email.com">
+			</div> -->
 			<div class="mb-3">
 				<label>Álbum favorito</label>
 				<select v-model="selected" multiple class="form-select">
-					<option>Soda Stereo</option>
-					<option>Nada Personal</option>
-					<option>Signos</option>
-					<option>Ruido Blanco</option>
-					<option>Doble Vida</option>
-					<option>Languis</option>
-					<option>Cancion Animal</option>
-					<option>Rex Mix</option>
-					<option>Dynamo</option>
-					<option>Zona De Promesas</option>
-					<option>Sueño Stereo</option>
-					<option>Comfort Y Musica Para Volar</option>
-					<option>El Último Concierto A</option>
-					<option>El Último Concierto B</option>
-					<option>Gira Me Verás Volver 1</option>
-					<option>Gira Me Verás Volver 2</option>
-					<option>Sep7imo Dia</option>
+					<option v-for="(item,index) in arrayDiscos" :key="index">{{item.disco_nombre}}</option>
 				</select>
 			</div>
 			<div class="mb-3">
@@ -63,24 +47,36 @@
 
 export default {
   name: 'IngresarComponentes',
+//   props: {
+// 	usuarioSesion: Array,
+// 	usuarioPosicion: Number,
+//   },
   data:function(){
 		return {
 			// id:0,
-			nombre:null,
-			apellido:null,
+			// nombre:null,
+			// apellido:null,
 			comentario:null,
 			selected:[],
-			email:null,
+			// email:null,
 			arr: [],
 			errores:[],
 			enviado: false,
+			arrayUsuarios: [],
+			arrayDiscos: [],
 		}
 	},
 
 	computed : {
-		hayErrores: function(){
-			return this.errores.length; 
-		},
+	hayErrores: function(){
+		return this.errores.length; 
+	},
+	traerUsuarioSesion: function (){
+		return this.arrayUsuarios.filter(usuario => usuario.sesionEstado === true);
+	},
+	posicionUsuarioSesion:function(){
+		return this.arrayUsuarios.map(usuario => usuario.sesionEstado).indexOf(true);
+	}
 	},
 	
     methods:{
@@ -94,26 +90,19 @@ export default {
 		this.enviado = true;
 		this.errores = [];
 
-		if (!this.nombre) {
-			this.errores.push('Tiene que ingresar un nombre.');
-		}
-		if (!this.apellido) {
-			this.errores.push('Tiene que ingresar un apellido.');
-		}
 		if (!this.comentario) {
 			this.errores.push('Debe completar el comentario');
 		}
-		if (!this.email) {
-			this.errores.push('Debe igesar un email.');
+		if(this.posicionUsuarioSesion == -1){
+			this.errores.push('Debes iniciar sesión para poder publicar un comentario');
 		}
-
 		if (this.errores.length == 0) {
 			this.nuevoObj = {
 				// id: this.id,
-				nombre: this.nombre,
-				apellido: this.apellido,
+				nombre: this.traerUsuarioSesion[0].nombre,
+				apellido: this.traerUsuarioSesion[0].apellido,
 				comentario: this.comentario,
-				email: this.email,
+				email: this.traerUsuarioSesion[0].email,
 				selected: this.selected
 			}
 
@@ -122,13 +111,10 @@ export default {
             }else{
                 this.arr=JSON.parse(localStorage.getItem("dato"))
             }
-            this.arr.push(this.nuevoObj)
+            this.arr.push(this.nuevoObj);
             localStorage.setItem("dato",JSON.stringify(this.arr))
-			this.nombre = null;
-			this.apellido = null;
 			this.comentario = null;
 			this.selected = [];
-			this.email = null;
 		}
 		// console.log(this.id);
 		// Object.assign(this.$data, this.$options.data);
@@ -138,8 +124,17 @@ export default {
     }
     },
 	mounted:function(){
-		// console.log(this.traerId);
-		// console.log(this.arrayIds);
+		if(localStorage.usuarios){
+			this.arrayUsuarios = JSON.parse(localStorage.getItem("usuarios"));
+		}
+		console.log(this.posicionUsuarioSesion, this.traerUsuarioSesion);
+
+		// FETCH  a discos
+		fetch('https://sodasstereo.000webhostapp.com/api/discos.php')
+		.then(response => response.json())
+		.then(response => {
+		this.arrayDiscos = response;
+	})
 	},
 }
 </script>

@@ -6,7 +6,7 @@
 
 <script>
 
-import IngresarComponentes from '@/components/IngresarComponentes.vue'
+import IngresarComponentes from '@/components/IngresarComponentes.vue';
 
 export default {
   name: 'IngresarView',

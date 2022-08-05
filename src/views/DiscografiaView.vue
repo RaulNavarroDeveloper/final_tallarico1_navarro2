@@ -12,6 +12,11 @@ export default {
   name: 'DiscografiaView',
   components: {
     DiscografiaComponentes
-  }
+  },
+  data(){
+    return {
+      discos: []
+    }
+  },
 }
 </script>
